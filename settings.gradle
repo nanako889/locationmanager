@@ -1,0 +1,3 @@
+rootProject.name='locationmanager'
+include ':app'
+include ':xlocationmanager'
