@@ -31,6 +31,7 @@ public class XLocationManager {
     private android.location.LocationManager mLocationManager;
     public static final String BROADCAST_SINGLE_UPDATE = "broadcast_last_location_changed";
     private int mMaxRetryCount = 10;
+    private int cycleDuration = 3000;
     private int mCurrentRetryCount;
     private HandlerThread mHandlerThread;
     private Handler mBackHander;
@@ -106,7 +107,7 @@ public class XLocationManager {
             Location location = getCurrentLocation(true);
             if (location == null) {
                 mCurrentRetryCount++;
-                mHandler.postDelayed(mGetLocatonRunn, 1500);
+                mHandler.postDelayed(mGetLocatonRunn, cycleDuration);
             }
         }
     };
@@ -164,6 +165,10 @@ public class XLocationManager {
 
     public void setMaxRetryCount(int maxRetryCount) {
         mMaxRetryCount = maxRetryCount;
+    }
+
+    public void setCycleDuration(int cycleDuration) {
+        this.cycleDuration = cycleDuration;
     }
 
     public void showCurrentAddress() {
