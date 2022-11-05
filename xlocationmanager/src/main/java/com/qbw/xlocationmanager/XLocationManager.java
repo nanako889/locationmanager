@@ -10,7 +10,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 import com.qbw.actionmanager.ActionManager;
@@ -117,7 +116,6 @@ public class XLocationManager {
     @SuppressLint("MissingPermission")
     public Location getCurrentLocation(boolean notifyGetLocation) {
         try {
-            //获取所有可用的位置提供器
             List<String> providers = mLocationManager.getProviders(true);
             if (providers.isEmpty()) {
                 sLog.e("location provider is empty");
@@ -125,7 +123,6 @@ public class XLocationManager {
             }
             for (String provider : providers) {
                 sLog.i("privider[%s]", provider);
-                //获取Location
                 final Location location = mLocationManager.getLastKnownLocation(provider);
                 if (location != null && (int) location.getLatitude() != 0 && (int) location.getLongitude() != 0) {
                     sLog.i("save location,%s", location.toString());
@@ -221,10 +218,8 @@ public class XLocationManager {
     }
 
     /**
-     * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
-     *
      * @param context
-     * @return true 表示开启
+     * @return true
      */
     public final boolean isGpsOpened(final Context context) {
         return mLocationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER);
