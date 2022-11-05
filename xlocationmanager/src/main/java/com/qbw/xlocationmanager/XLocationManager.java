@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -36,7 +37,8 @@ public class XLocationManager {
     private HandlerThread mHandlerThread;
     private Handler mBackHander;
 
-    private XLocationManager() {}
+    private XLocationManager() {
+    }
 
     public static XLocationManager getInstance() {
         if (sInst == null) {
@@ -142,16 +144,20 @@ public class XLocationManager {
                     });
                     if (notifyGetLocation) {
                         ActionManager.getInstance()
-                                .triggerAction(new GetLocationAction(savedGps.getLat() != gps.getLat() || savedGps.getLng() != gps.getLng()));
+                                .triggerAction(new GetLocationAction(savedGps != null && savedGps.getLat() != gps.getLat() || savedGps.getLng() != gps.getLng()));
                     }
                     return location;
                 } else {
+                    int flag = 0;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        flag = PendingIntent.FLAG_IMMUTABLE;
+                    }
                     mLocationManager.requestSingleUpdate(provider,
                             PendingIntent.getBroadcast(sContext,
                                     0,
                                     new Intent(
                                             BROADCAST_SINGLE_UPDATE),
-                                    0));
+                                    flag));
 
                 }
                 sLog.w("provider[%s] location is null", provider);
@@ -292,7 +298,7 @@ public class XLocationManager {
         @SerializedName("street")
         private String mStreet = "";
         @SerializedName("feature")
-        private String mFeature="";
+        private String mFeature = "";
 
         public String getAddress() {
             return mAddress;
