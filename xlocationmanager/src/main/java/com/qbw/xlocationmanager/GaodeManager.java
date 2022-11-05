@@ -33,9 +33,7 @@ public class GaodeManager {
     }
 
     private boolean mWorking;
-    //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient;
-    //声明定位回调监听器
     public AMapLocationListener mLocationListener;
     private AMapLocationClientOption mLocationOption;
     private int mMaxRetryCount;
